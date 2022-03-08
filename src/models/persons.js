@@ -13,7 +13,9 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING //esto debe tener los tipos definidos ver despues
     },
     document: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        unique : true
+
     },
     Hobbies: {
         type: DataTypes.TEXT

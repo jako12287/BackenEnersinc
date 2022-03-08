@@ -2,7 +2,7 @@ const express = require('express')
 const res = require('express/lib/response')
 const person = express.Router()
 person.use(express.json())
-const { getPersons, postPersons } = require('../controller/controllerPerson')
+const { getPersons, postPersons, putPersons, deletePersons } = require('../controller/controllerPerson')
 
 person.get('/',async(req, res)=>{
 
@@ -28,36 +28,30 @@ person.post('/', async(req, res)=>{
 
 })
 
-// name.get('/', async(req, res)=>{
-//     try {
-//         let getDB = await Names.findAll({})
-//         if(!getDB.length){
-//             res.send('No hay nombres aun')
-//         }else{
+person.put('/:id', async(req, res)=>{
+    const {
+        names, 
+        lastnames, 
+        typedocument, 
+        document, 
+        Hobbies
+    } = req.body
+    const {id} = req.params
 
-//             res.send(getDB)
-//         }
-       
-        
-//     } catch (err) {
-//         res.status(500).send(`Upps Internal Server Error`)
-//     }
-// })
+    let put = await putPersons({id, names, lastnames, typedocument, document, Hobbies})
+   
+    res.send(put)
 
-// name.post('/', async(req, res)=>{
-//     try {
-//         const {name} = req.body
+})
 
-//         let postDB = await Names.create({
-//             name,
-//         })
-//         res.send(`exito al guardar en la BD ${postDB}`) 
-        
-//     } catch (error) {
-//         console.error(error)
-        
-//     }
-// })
+person.delete('/:id', async(req, res)=>{
+    const {id} = req.params
+
+    let delet = await deletePersons({id})
+    
+    res.send(delet)
+
+})
 
 
 module.exports = person;
