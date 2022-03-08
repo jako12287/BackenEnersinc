@@ -1,3 +1,4 @@
+const res = require("express/lib/response");
 const { Persons } = require("../db");
 
 let getPersons = async () => {
@@ -21,6 +22,9 @@ let postPersons = async ({
   Hobbies,
 }) => {
     try {
+
+        let get = await Persons.findAll({where:{document}})
+        if (get.length > 0) return res.status(406)
         if (!names || !lastnames || !typedocument || !document || !Hobbies)
           return "Faltan datos, todos los campos son necesarios";
       
