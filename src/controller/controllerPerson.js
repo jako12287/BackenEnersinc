@@ -24,7 +24,7 @@ let postPersons = async ({
     try {
 
         let get = await Persons.findAll({where:{document}})
-        if (get.length > 0) return res.status(406)
+        if (get.length > 0) return res.sendStatus(406)
         if (!names || !lastnames || !typedocument || !document || !Hobbies)
           return "Faltan datos, todos los campos son necesarios";
       

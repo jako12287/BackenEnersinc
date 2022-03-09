@@ -1,18 +1,27 @@
 const express = require('express')
 const res = require('express/lib/response')
+const jwt = require('jsonwebtoken')
 const person = express.Router()
+const  verifyTokken  = require('../middleware/verificationTokken')
 person.use(express.json())
 const { getPersons, postPersons, putPersons, deletePersons } = require('../controller/controllerPerson')
 
-person.get('/',async(req, res)=>{
-
+person.get('/', verifyTokken, async(req, res)=>{
     let get = await getPersons()
+    jwt.verify(req.token, 'shhhss', (error, authData)=>{
+        if(error){
+            res.sendStatus(403)
+        }else{
 
-    res.send(get)
+        
+            res.send(get)
+        }
+
+    })
 
 })
 
-person.post('/', async(req, res)=>{
+person.post('/', verifyTokken, async(req, res)=>{
 
     const {
             names, 
@@ -24,11 +33,21 @@ person.post('/', async(req, res)=>{
 
     let post = await postPersons({names, lastnames, typedocument, document, Hobbies})
 
-    res.send(post)
+    jwt.verify(req.token, 'shhhss', (error, authData)=>{
+        if(error){
+            res.sendStatus(403)
+        }else{
+
+        
+            res.send(post)
+        }
+
+    })
+
 
 })
 
-person.put('/:id', async(req, res)=>{
+person.put('/:id', verifyTokken, async(req, res)=>{
     const {
         names, 
         lastnames, 
@@ -39,17 +58,39 @@ person.put('/:id', async(req, res)=>{
     const {id} = req.params
 
     let put = await putPersons({id, names, lastnames, typedocument, document, Hobbies})
+
+    jwt.verify(req.token, 'shhhss', (error, authData)=>{
+        if(error){
+            res.sendStatus(403)
+        }else{
+
+        
+            res.send(put)
+        }
+
+    })
    
-    res.send(put)
 
 })
 
-person.delete('/:id', async(req, res)=>{
+person.delete('/:id', verifyTokken, async(req, res)=>{
     const {id} = req.params
 
     let delet = await deletePersons({id})
+
+    jwt.verify(req.token, 'shhhss', (error, authData)=>{
+        if(error){
+            res.sendStatus(403)
+        }else{
+
+            res.send(delet)
+        
+        }
+
+    })
+
+
     
-    res.send(delet)
 
 })
 
